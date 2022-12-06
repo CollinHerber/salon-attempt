@@ -1,9 +1,7 @@
 import { IContainer, IRegistry, Registration } from 'aurelia';
-import { ValidationHtmlConfiguration, ValidationTrigger } from '@aurelia/validation-html';
 
 import * as attributes from './attributes';
 import { IDesignSystemConfiguration } from './configuration';
-import * as elements from './elements';
 import * as services from './services';
 import * as valueConverters from './value-converters';
 
@@ -51,16 +49,9 @@ export class DesignSystemPlugin implements IRegistry {
 
   register(container: IContainer): IContainer {
     container.register(services.AnimationService);
-    container.register(services.NotificationService);
     container.register(attributes);
-    container.register(elements);
     container.register(valueConverters);
     container.register(Registration.instance(IDesignSystemConfiguration, this.#configuration));
-    container.register(
-      ValidationHtmlConfiguration.customize((options) => {
-        options.DefaultTrigger = ValidationTrigger.changeOrFocusout;
-      }),
-    );
 
     // container = container.register(AppTask.beforeCreate(IContainer, async c => {
     //     // console
@@ -73,4 +64,4 @@ export class DesignSystemPlugin implements IRegistry {
   }
 }
 export { IDesignSystemConfiguration };
-export { attributes, elements, valueConverters, services };
+export { attributes, valueConverters, services };

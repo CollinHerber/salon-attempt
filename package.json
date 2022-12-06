@@ -42,7 +42,9 @@
     "jest-environment-jsdom": "^28.1.1",
     "jest-transform-stub": "^2.0.0",
     "@types/jest": "^28.1.1",
-    "@aurelia/ts-jest": "latest"
+    "@aurelia/ts-jest": "latest",
+    "sass": "^1.54.0",
+    "sass-loader": "^13.0.2"
   },
   "scripts": {
     "lint:js": "eslint src test --ext .js,.ts",

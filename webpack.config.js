@@ -26,7 +26,7 @@ module.exports = function(env, { analyze }) {
     entry: {
       // Build only plugin in production mode,
       // build dev-app in non-production mode
-      entry:  production? './src/index.ts' : './dev-app/main.ts'
+      entry:  production? './src/index.ts' : './src/main.ts'
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -70,27 +70,71 @@ module.exports = function(env, { analyze }) {
     },
     module: {
       rules: [
+        {
+          test: /\.s[ac]ss$/i,
+          use: [
+            // Creates `style` nodes from JS strings
+            "style-loader",
+            // Translates CSS into CommonJS
+            "css-loader",
+            // Compiles Sass to CSS
+            {
+              loader: 'sass-loader',
+              options: {
+                implementation: require('sass'),
+                sassOptions: {
+                  includePaths: [path.resolve('./node_modules')]
+                }
+              }
+            },
+          ],
+        },
         { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset' },
         { test: /\.(woff|woff2|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,  type: 'asset' },
         {
-          test: /\.css$/i,
+          test: /\.s[ac]ss$/i,
           // For style loaded in src/main.js, it's not loaded by style-loader.
           // It's for shared styles for shadow-dom only.
           issuer: /[/\\]src[/\\]main\.(js|ts)$/,
-          use: [ cssLoader, postcssLoader ]
+          use: [ cssLoader, postcssLoader,             {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+              sassOptions: {
+                includePaths: [path.resolve('./node_modules')]
+              }
+            }
+          }, ]
         },
         {
-          test: /\.css$/i,
+          test: /\.s[ac]ss$/i,
           // For style loaded in other js/ts files, it's loaded by style-loader.
           // They are directly injected to HTML head.
           issuer: /(?<![/\\]src[/\\]main)\.(js|ts)$/,
-          use: [ 'style-loader', cssLoader, postcssLoader ]
+          use: [ 'style-loader', cssLoader, postcssLoader,
+            {
+              loader: 'sass-loader',
+              options: {
+                implementation: require('sass'),
+                sassOptions: {
+                  includePaths: [path.resolve('./node_modules')]
+                }
+              }
+            },]
         },
         {
-          test: /\.css$/i,
+          test: /\.s[ac]ss$/i,
           // For style loaded in html files, Aurelia will handle it.
           issuer: /\.html$/,
-          use: [ cssLoader, postcssLoader ]
+          use: [ cssLoader, postcssLoader,             {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+              sassOptions: {
+                includePaths: [path.resolve('./node_modules')]
+              }
+            }
+          }, ]
         },
         { test: /\.ts$/i, use: ['ts-loader', '@aurelia/webpack-loader'], exclude: /node_modules/ },
         {

@@ -4,7 +4,7 @@ import { MyApp } from './my-app';
 // They are for sharedStyles in shadowDOM.
 // However, css files imported in other js/ts files are processed by style-loader.
 // import shared from './shared.css';
-import * as Plugin from "../src/index";
+import * as Plugin from "./index";
 
 Aurelia
   /*
